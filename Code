@@ -1,0 +1,311 @@
+//Summer Assignment Problem 2 - Cell Data
+import java.util.Scanner;
+import java.util.Arrays;
+
+public class Problem02{
+   
+    public static String divide(String input) {
+        
+        String firstHalf = input.substring(0,4);
+        String lastHalf = input.substring(4);
+        
+        String output1 = firstHalf + firstHalf;
+        String output2 = lastHalf + lastHalf;
+        
+        return output1 + " and " + output2;
+        
+    }
+    
+    public static String addN(String input, int n) {
+        
+        String nBits = input.substring(0,n);
+        String[] nBitsArr = nBits.split("");
+        
+        
+        String inPart = input.substring(n);
+        
+        String output = nBits+nBits+inPart;
+        
+        String[] outputArr = output.split("");
+        String[] outputArrL8 = new String[8];
+        
+        
+        for(int i = 0;i < outputArrL8.length;i++) {
+            
+            outputArrL8[i] = outputArr[i];
+            
+        }
+        
+        return (String.join("", outputArrL8));
+        
+    }
+    
+    public static String subtractN(String input, int n) {
+        
+        String firstPart = input.substring(n);
+        String secondPart = input.substring(input.length() - n);
+        
+        String[] secondPartArr = secondPart.split("");
+        Arrays.sort(secondPartArr);
+        String secondPartAlpha = String.join("", secondPartArr);
+        
+        String output = firstPart+secondPartAlpha;
+        
+        return output;
+
+    }
+    
+    public static String union(String input1, String input2) {
+        
+        String part1 = input1.substring(4);
+        String[] part1Arr = part1.split("");
+        Arrays.sort(part1Arr);
+        part1 = String.join("", part1Arr);
+        
+        String part2 = input2.substring(0,4);
+        String[] part2Arr = part2.split("");
+        Arrays.sort(part2Arr);
+        part2 = String.join("", part2Arr);
+        
+        return part1 + part2;
+        
+    }
+    
+    public static String intersect(String input1, String input2) {
+        
+        String quart1 = input1.substring(0,2);
+        String quart2 = input1.substring(6,8);
+        String half1 = quart1+quart2;
+        String[] half1Arr = half1.split("");
+        Arrays.sort(half1Arr);
+        half1 = String.join("", half1Arr);
+        
+        String quart3 = input2.substring(0,2);
+        String quart4 = input2.substring(6,8);
+        String half2 = quart3+quart4;
+        String[] half2Arr = half2.split("");
+        Arrays.sort(half2Arr);
+        half2 = String.join("", half2Arr);
+        
+        String output = half1+half2;
+        
+        return output;
+        
+    }
+ 
+    
+    
+    public static void main(String[] args) {
+        //Created scanner variable
+        Scanner reader = new Scanner(System.in); 
+        
+        //Taking inputs for the different variables
+        System.out.print("Enter the cell for X:");  
+        String x = reader.nextLine();
+        
+        System.out.print("Enter the cell for Y:");  
+        String y = reader.nextLine();
+        
+        System.out.print("Enter the cell for Z:");  
+        String z = reader.nextLine();
+        
+        String[] cmdsArr = {};
+        
+        String currentDna = "";
+        String firstCell = "";
+        
+        for(int i = 0;i < 7;i++) {
+        
+            System.out.print("Enter the commands:");
+            String cmds = reader.nextLine();
+            
+            cmdsArr = cmds.split(" ");
+        
+            for(int j = 0;j < cmdsArr.length;j++) {
+                
+                cmdsArr[j] = cmdsArr[j].toLowerCase();
+                
+            }
+            
+            currentDna = cmdsArr[cmdsArr.length - 1];
+            
+            if(currentDna.equals("x")) {
+                currentDna = x;
+            }
+            else if(currentDna.equals("y")) {
+                currentDna = y;
+            }
+            else if(currentDna.equals("z")) {
+                currentDna = z;
+            }
+            
+            for(int a = cmdsArr.length - 2;a >= 0;a--) {
+            
+                if(cmdsArr[a].equals("div")) {
+                    currentDna = divide(currentDna);
+                }
+                else if(cmdsArr[a].contains("add")) {
+                    
+                    String nString = cmdsArr[a].substring(3);
+                    int n = Integer.parseInt(nString);
+                    
+                    currentDna = addN(currentDna, n);
+                    
+                }
+                else if(cmdsArr[a].contains("sub")) {
+                    
+                    String nString = cmdsArr[a].substring(3);
+                    int n = Integer.parseInt(nString);
+                    
+                    currentDna = subtractN(currentDna, n);
+                    
+                }
+                else if(cmdsArr[a].contains("uni")) {
+                    
+                    String secondCell = cmdsArr[a + 1];
+                    
+                    if(secondCell.equals("x")) {
+                        secondCell = x;
+                        currentDna = union(secondCell, currentDna);
+                        
+                        break;
+                    }
+                    else if(secondCell.equals("y")) {
+                        secondCell = y;
+                        currentDna = union(secondCell, currentDna);
+                        
+                        break;
+                    }
+                    else if(secondCell.equals("z")) {
+                        secondCell = z;
+                        currentDna = union(secondCell, currentDna);
+                        
+                        break;
+                    }
+                    else {
+                        
+                        if(cmdsArr[a + 3].equals("div")) {
+                            firstCell = divide(currentDna);
+                        }
+                        else if(cmdsArr[a + 3].contains("add")) {
+                            
+                            String nString = cmdsArr[a + 3].substring(3);
+                            int n = Integer.parseInt(nString);
+                            
+                            firstCell = addN(currentDna, n);
+                            
+                        }
+                        else if(cmdsArr[a + 3].contains("sub")) {
+                            
+                            String nString = cmdsArr[a + 3].substring(3);
+                            int n = Integer.parseInt(nString);
+                            
+                            firstCell = subtractN(currentDna, n);
+                            
+                        }
+                        
+                       if(cmdsArr[a + 1].equals("div")) {
+                            secondCell = divide(currentDna);
+                        }
+                        else if(cmdsArr[a + 1].contains("add")) {
+                            
+                            String nString = cmdsArr[a + 1].substring(3);
+                            int n = Integer.parseInt(nString);
+                            
+                            secondCell = addN(currentDna, n);
+                            
+                        }
+                        else if(cmdsArr[a + 1].contains("sub")) {
+                            
+                            String nString = cmdsArr[a + 1].substring(3);
+                            int n = Integer.parseInt(nString);
+                            
+                            secondCell = subtractN(currentDna, n);
+                            
+                        } 
+                                
+                    }
+                    
+                    currentDna = union(secondCell, firstCell);
+                    
+                }
+                else if(cmdsArr[a].contains("int")) {
+                    
+                    String secondCell = cmdsArr[a + 1];
+                    
+                    if(secondCell.equals("x")) {
+                        secondCell = x;
+                        currentDna = intersect(secondCell, currentDna);
+                        
+                        break;
+                    }
+                    else if(secondCell.equals("y")) {
+                        secondCell = y;
+                       currentDna = intersect(secondCell, currentDna);
+                        
+                        break;
+                    }
+                    else if(secondCell.equals("z")) {
+                        secondCell = z;
+                        currentDna = intersect(secondCell, currentDna);
+                        
+                        break;
+                    }
+                    else {
+                        
+                        if(cmdsArr[a + 3].equals("div")) {
+                            firstCell = divide(currentDna);
+                        }
+                        else if(cmdsArr[a + 3].contains("add")) {
+                            
+                            String nString = cmdsArr[a + 3].substring(3);
+                            int n = Integer.parseInt(nString);
+                            
+                            firstCell = addN(currentDna, n);
+                            
+                        }
+                        else if(cmdsArr[a + 3].contains("sub")) {
+                            
+                            String nString = cmdsArr[a + 3].substring(3);
+                            int n = Integer.parseInt(nString);
+                            
+                            firstCell = subtractN(currentDna, n);
+                            
+                        }
+                        
+                       if(cmdsArr[a + 1].equals("div")) {
+                            secondCell = divide(currentDna);
+                        }
+                        else if(cmdsArr[a + 1].contains("add")) {
+                            
+                            String nString = cmdsArr[a + 1].substring(3);
+                            int n = Integer.parseInt(nString);
+                            
+                            secondCell = addN(currentDna, n);
+                            
+                        }
+                        else if(cmdsArr[a + 1].contains("sub")) {
+                            
+                            String nString = cmdsArr[a + 1].substring(3);
+                            int n = Integer.parseInt(nString);
+                            
+                            secondCell = subtractN(currentDna, n);
+                            
+                        }
+                        
+                    }
+                    
+                    intersect(secondCell, firstCell);
+                    
+                }
+                
+                continue;
+                
+            }    
+            
+            System.out.println(currentDna + "\n");
+            
+        }
+    }
+    
+}
